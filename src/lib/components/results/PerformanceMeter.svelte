@@ -63,17 +63,17 @@
   <h3>Performance Analysis</h3>
   
   <div class="meter-container">
-    <div class="meter-labels">
-      <span>Unplayable</span>
-      <span>Playable</span>
-      <span>Smooth</span>
-      <span>Excellent</span>
-    </div>
-    
     <div class="meter-bar">
+      <div class="meter-zones">
+        <div class="meter-zone unplayable">Unplayable</div>
+        <div class="meter-zone low">Playable</div>
+        <div class="meter-zone medium">Smooth</div>
+        <div class="meter-zone high">Excellent</div>
+      </div>
+      
       <div 
         class="meter-fill" 
-        style="width: {performancePercentage}%; background: {getFpsColor(mediumFps)}"
+        style="width: {performancePercentage}%;"
       ></div>
       
       <div class="meter-markers">
@@ -145,8 +145,8 @@
   .performance-meter {
     background: rgba(18, 24, 38, 0.7);
     border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 25px;
+    padding: 15px;
+    margin-bottom: 15px;
     border: 1px solid rgba(77, 171, 245, 0.2);
     box-shadow: 0 0 15px rgba(77, 171, 245, 0.1);
   }
@@ -159,35 +159,72 @@
   }
   
   .meter-container {
-    margin-bottom: 20px;
-  }
-  
-  .meter-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    color: #b0b0d0;
-    font-size: 12px;
+    margin-bottom: 15px;
   }
   
   .meter-bar {
-    height: 20px;
+    height: 35px;
     background: rgba(30, 40, 60, 0.5);
     border-radius: 10px;
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(77, 171, 245, 0.3);
-    margin-bottom: 15px;
+    margin-bottom: 25px;
+  }
+  
+  .meter-zones {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  .meter-zone {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+  }
+  
+  .meter-zone.unplayable {
+    background: rgba(244, 67, 54, 0.3);
+    flex: 0.3;
+  }
+  
+  .meter-zone.low {
+    background: rgba(255, 152, 0, 0.3);
+    flex: 0.3;
+  }
+  
+  .meter-zone.medium {
+    background: rgba(255, 235, 59, 0.3);
+    flex: 0.3;
+  }
+  
+  .meter-zone.high {
+    background: rgba(76, 175, 80, 0.3);
+    flex: 0.1;
   }
   
   .meter-fill {
     height: 100%;
-    border-radius: 8px;
-    background: linear-gradient(90deg, var(--low-fps-color), var(--medium-fps-color), var(--high-fps-color));
-    transition: width 1s ease-out;
+    background: linear-gradient(90deg, 
+      var(--low-fps-color) 0%, 
+      var(--low-fps-color) 30%, 
+      var(--medium-fps-color) 30%, 
+      var(--medium-fps-color) 60%, 
+      var(--high-fps-color) 60%, 
+      var(--high-fps-color) 100%
+    );
     position: relative;
-    z-index: 1;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    z-index: 2;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    transition: width 1s ease-out;
   }
   
   .meter-markers {
@@ -196,7 +233,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 2;
+    z-index: 3;
     pointer-events: none;
   }
   
@@ -209,7 +246,7 @@
   .marker-line {
     width: 2px;
     height: 100%;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.5);
     position: absolute;
     left: 0;
   }
@@ -228,16 +265,16 @@
   .settings-fps {
     display: flex;
     justify-content: space-around;
-    margin-top: 25px;
-    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 15px;
   }
   
   .setting {
     text-align: center;
-    padding: 10px 15px;
+    padding: 8px 12px;
     background: rgba(30, 40, 60, 0.3);
     border-radius: 8px;
-    min-width: 100px;
+    min-width: 80px;
     border: 1px solid rgba(77, 171, 245, 0.1);
   }
   
@@ -253,31 +290,30 @@
   }
   
   .setting-fps {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
   }
   
   .performance-summary {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-top: 15px;
-    gap: 15px;
-    padding: 15px;
+    padding: 10px;
     background: rgba(30, 40, 60, 0.3);
     border-radius: 8px;
     border: 1px solid rgba(77, 171, 245, 0.2);
   }
   
   .summary-icon {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
+    margin-right: 12px;
+    flex-shrink: 0;
   }
   
   .summary-icon.high {
@@ -310,33 +346,49 @@
   
   .summary-text {
     color: white;
-    font-size: 16px;
+    font-size: 15px;
   }
   
-  /* Animation for the meter fill */
-  @keyframes fillAnimation {
-    from { width: 0; }
-    to { width: var(--fill-width); }
-  }
-  
-  /* Make responsive */
+  /* Mobile responsive improvements */
   @media (max-width: 768px) {
+    .performance-meter {
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    
+    .meter-bar {
+      height: 30px;
+      margin-bottom: 20px;
+    }
+    
+    .meter-zone {
+      font-size: 10px;
+    }
+    
     .settings-fps {
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
     
     .setting {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      min-width: auto;
       width: 100%;
+      padding: 6px 10px;
+    }
+    
+    .setting-name {
+      margin-bottom: 0;
     }
     
     .performance-summary {
-      flex-direction: column;
-      text-align: center;
+      align-items: flex-start;
+    }
+    
+    .marker-label {
+      font-size: 10px;
     }
   }
 </style>
