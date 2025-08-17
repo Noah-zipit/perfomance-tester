@@ -46,6 +46,16 @@
       
       // Save to history
       saveResult(userSpecs, selectedGame, predictionText);
+      
+      // Scroll to results on mobile
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          const resultsContainer = document.querySelector('.results-container');
+          if (resultsContainer) {
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      }
     } catch (err) {
       console.error('Prediction failed:', err);
       error = "Sorry, we couldn't get a prediction at this time. Please try again later.";
@@ -58,6 +68,7 @@
 
 <svelte:head>
   <title>Game Performance Predictor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </svelte:head>
 
 <div class="main-container">
@@ -93,7 +104,7 @@
   {#if showPCViewer}
     <section class="pc-viewer-section">
       <h2>Interactive PC Viewer</h2>
-      <p class="section-description">Explore your PC components in 3D and see how they affect game performance</p>
+      <p class="section-description">Explore your PC components in 2D and see how they affect game performance</p>
       
       <PCViewer selectedSpecs={userSpecs} />
     </section>
@@ -417,16 +428,45 @@
   }
   
   @media (max-width: 768px) {
+    .main-container {
+      padding: 12px;
+    }
+    
     .input-container {
       flex-direction: column;
     }
     
     .hero {
       padding: 30px 15px;
+      margin-bottom: 20px;
     }
     
     h1 {
       font-size: 2rem;
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+    }
+    
+    .specs-container, .game-container {
+      padding: 15px;
+      min-width: 100%;
+    }
+    
+    .predict-button {
+      margin-top: 15px;
+      padding: 12px;
+    }
+    
+    .results-container {
+      padding: 15px;
+      margin-top: 20px;
+    }
+    
+    .prediction-text {
+      padding: 15px;
+      margin: 15px 0;
     }
     
     .actions {
@@ -437,6 +477,10 @@
     .history-link, .reset-button {
       width: 100%;
       text-align: center;
+    }
+    
+    .pc-viewer-section {
+      margin: 20px 0;
     }
   }
 </style>
