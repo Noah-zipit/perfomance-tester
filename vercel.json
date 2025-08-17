@@ -1,10 +1,5 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "framework": "sveltekit",
-  "functions": {
-    "api/**/*": {
-      "runtime": "nodejs18.x"
-    }
-  }
+  "framework": "sveltekit"
 }
